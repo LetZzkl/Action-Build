@@ -9,8 +9,8 @@
 <img align="right" src="pic/zakozako~.svg" width="100px" alt="zakozako~">
  
 # Action-Build
-**```Build Kernels for All OnePlus Devices```**
-> More efficient · More comprehensive · More Faster · More stable
+ 
+<img src="https://readme-typing-svg.demolab.com?font=Meslo+Nerd+Font&size=32&duration=2800&pause=2000&color=A855F7&center=true&vCenter=true&width=940&lines=Welcome+to+Action+Build!;Build+Kernels+For+All+OnePlus+Devices;Your+Device,+Your+Rules!;%E6%9B%B4%E9%AB%98%E6%95%88+%E6%9B%B4%E5%85%A8%E9%9D%A2+%E6%9B%B4%E5%BF%AB%E9%80%9F+%E6%9B%B4%E7%A8%B3%E5%AE%9A+%E5%85%A8%E8%87%AA%E5%8A%A8%E5%8C%96">
  
 Prohibit the promotion of forked repositories with **no modifications**; see [LICENSE](LICENSE)
 <details>
@@ -19,7 +19,7 @@ Prohibit the promotion of forked repositories with **no modifications**; see [LI
   <img src="https://github.com/Numbersf/Action-Build/blob/SukiSU-Ultra/pic/start.gif" width="500"/>
   <img src="https://github.com/Numbersf/Action-Build/blob/SukiSU-Ultra/pic/start(2).png" width="500"/>
 </p>
-<summary>Please note, if you want to use other branch manager projects, make sure to disable 'Copy only the SukiSU-Ultra branch' when forking.</summary>
+<summary>Please note, if you want to use other branch manager projects, make sure to disable 'Copy the SukiSU-Ultra branch only' when forking.</summary>
 </details>
  
 <details>
@@ -40,9 +40,9 @@ Prohibit the promotion of forked repositories with **no modifications**; see [LI
 >
 >>`_？ Android19 (？)`
 >
->>`_？ Android18 (？)`
+>>`_？ Android18 (？)`<strong>
 >
->>`_c Android17 (Cinnamon Bun)`<strong>
+>>`_c Android17 (Cinnamon Bun)`
 >
 >>`_b Android16 (Baklava)`
 >
@@ -63,8 +63,8 @@ Prohibit the promotion of forked repositories with **no modifications**; see [LI
 >|| Average Duration Range|Maximum Duration|
 >|------------------|----------------------|------------|
 >| `Ultra-fast build for all devices` | `1st:17min ~ 36min 2nd:6min ~ 17min` | `40/29min`|
->| `Kernel versions 5.10-5.15 built using official script` | `29min ~ 35min`| `45min`    |
->| `Kernel versions 6.1-6.12 built using official script` | `59min ~ 1h12min`| `1h28min` |
+>| `Kernel versions 5.10-5.15 built using official script` | `20min ~ 35min`| `45min`    |
+>| `Kernel versions 6.1-6.12 built using official script` | `55min ~ 1h12min`| `1h28min` |
 >
 > >Using ccache may slow down the first build; this only applies to ultra-fast builds.
 >
@@ -89,20 +89,31 @@ Prohibit the promotion of forked repositories with **no modifications**; see [LI
  
 # Features in Development
 - [ ] Kexec Kernel Hot Swap Support
-- [ ] LZ4 automatic upgrade following upstream,[#178](https://github.com/Numbersf/Action-Build/pull/178)
 - [ ] Full support for all kernel versions of Fengchi
 - Toothpaste should be squeezed bit by bit, GPUs should be cut slice by slice, PPTs should be shown slide by slide, and code should be written line by line — more features and optimizations... stay tuned!
  
 # Changelog
 > Minor updates will be ignored. For more details, please refer to the commit.
  
-- Full support for `DroidSpaces`+`ntsync`.  
+- Added `FakeConfig(HideConfig)` to hide the visibility of config options in `proc/config.gz`.  
+```
+Regular config option:
+set_config "CONFIG_IP_NF_TARGET_ECN=y"
+Hidden config option:
+set_hide_config "CONFIG_IP6_NF_NAT=y"
+```  
+ 
+- Added `FakePatch` to improve compatibility between multiple kernel sublevel and `susfs`.  
+ 
+- Added path recursion, providing full support for `Rust` build logic and `bindgen`/`Kleaf` dependency resolution on kernel version `6.12+`.  
+ 
+- `lz4`now automatically follows upstream upgrades and includes automatic error correction.  
+ 
+- Full support for `DroidSpaces`+`Ntsync`.  
  
 - Full support for `Re:Kernel`, automatically following upstream changes.  
  
 - Multiple external warnings enabled — checks whether the `fork source` is normal, if the kernel suffix build time contains abnormal symbol calls, etc.  
- 
-- Added multiple variables and automatic search, full adaptation to kernel version `6.12+`'s `Rust` build logic and dependencies.  
  
 - Complete `KPN` patch support.  
  
@@ -124,14 +135,15 @@ Prohibit the promotion of forked repositories with **no modifications**; see [LI
  
 - Support setting branches、custom version identifiers、fallback hash.  
 ```
-Set Branch: Change the original `susfs-main` to another `builtin` branch. Please modify according to the channel name in the SukiSU Ultra repository. Do not modify unless you are a developer. Do not leave it empty or remove it.
+Set Branch: Divided into manager-layer and built-in-layer. Please modify according to the channel name in the SukiSU Ultra repository. Do not modify unless you are a developer. Do not leave it empty or remove it.
 Custom Version Tag:
 Replace the original commit hash with your custom content, and move the commit hash to the end. This can be modified freely, but keep it reasonably short.
+The commit hash referred to here is the built-in-layer.
 v3.1.7-f5541e21@builtin
 ↓
 v3.1.7-CustomContent@builtin[f5541e21]
-If you don’t want to use a custom version tag, just leave it empty (e.g. susfs-main/).
-Regardless of whether the custom version identifier and fallback hash are enabled, they must be separated by two /(U+002F) and cannot be removed
+If you don’t want to use a custom version tag, just leave it empty (e.g. builtin/).
+Regardless of whether the custom version identifier and fallback hash are enabled, they must be separated by three /(U+002F) and cannot be removed.
 ```  
  
 - Fully automated retrieval of kernel information and build information.  
@@ -154,8 +166,6 @@ When there is a kernel-level update or a significant slowdown caused by changes 
 ```  
  
 - First to support for the kernel version `6.6+` new `setlocalversion` format using `echo`, fixing the issue where custom and randomly-generated pseudo-official suffixes were not applied. Now, this feature is fully supported across all device models and build methods.  
- 
-- Add `TRUSTY_EXISTS` to automatically detect whether the `6.6` kernel has defects in the kernel source code and determine whether `sed` is needed.  
  
 - Fix issues where `ZRAM` is unusable or unable to launch non-system apps.  
  
